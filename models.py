@@ -13,7 +13,6 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
-    username = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     business_name = db.Column(db.String)
@@ -21,9 +20,6 @@ class User(db.Model):
     business_password = db.Column(db.String)
     website_url = db.Column(db.String, nullable=False)
     phone = db.Column(db.String)
-    description = db.Column(db.String)
-    google_profile_url = db.Column(db.String)
-    facebook_profile_url = db.Column(db.String)
     payment_id = db.Column(db.Integer, db.ForeignKey('payment.id'), nullable=True)
     payment = db.relationship("Payment", uselist=False)
     products = db.relationship("Product", secondary=cart, lazy="subquery", backref=db.backref("users", lazy=True))
@@ -40,7 +36,6 @@ class User(db.Model):
           "id": self.id, 
           "first_name": self.first_name, 
           "last_name": self.last_name,
-          "username": self.username,
           "email": self.email,
           "password": self.password,
           "business_name": self.business_name,
@@ -48,11 +43,8 @@ class User(db.Model):
           "business_password": self.business_password,
           "website_url": self.website_url,
           "phone": self.phone,
-          "description": self.description,
-          "google_profile_url": self.google_profile_url,
-          "facebook_profile_url": self.facebook_profile_url,
           "payment_id": self.payment_id,
-          "payment": self.payment.to_dict(),
+          "payment": self.payment.to_dict() if self.payment is not None else None,
           "products": products
         }
         
